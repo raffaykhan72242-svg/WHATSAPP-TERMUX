@@ -15,7 +15,6 @@ let running = true;
 let reconnecting = false;
 let cachedVersion = null;
 
-// Professional Colors and Bold formatting
 const C = {
   reset: '\x1b[0m',
   bold: '\x1b[1m',
@@ -25,8 +24,7 @@ const C = {
   cyan: '\x1b[36m',
   magenta: '\x1b[35m',
   white: '\x1b[37m',
-  blue: '\x1b[34m', // <--- Ye add kar diya hai
-  bgGreen: '\x1b[42m',
+  blue: '\x1b[34m',
 };
 
 function log(msg, color, isBold = false) {
@@ -34,11 +32,13 @@ function log(msg, color, isBold = false) {
   console.log(`${boldCode}${C[color] || ''}${msg}${C.reset}`);
 }
 
-// Professional Banner with hard clear
+// Ekdum hard clear jo Termux ka scrollback bhi mita de
+function hardClear() {
+  process.stdout.write('\x1b[2J\x1b[3J\x1b[H'); 
+}
+
 function banner() {
-  // Termux ko force se clear karne ka tareeqa
-  process.stdout.write('\x1b[2J\x1b[0;0H'); 
-  
+  hardClear();
   console.log(C.cyan + "═".repeat(65) + C.reset);
   console.log(C.bold + C.red + "   _______  _______  _______  _______  _______          ");
   console.log(C.bold + C.yellow + "  (  ____ )(  ___  )(  ____ \\(  ____ \\(  ___  )|\\     /|");
@@ -257,7 +257,12 @@ async function main() {
 
   sock = await connectAndPair(phone);
 
-  console.log("");
+  // ---------------------------------------------------------
+  // Yahan Screen Clear ho jayegi taake purana kachra (pairing code wagera) khatam ho
+  hardClear(); 
+  banner();
+  // ---------------------------------------------------------
+
   log("═══════════════════════════════════════════", 'magenta');
   log("  🎯 SELECT MESSAGE TARGET", 'magenta', true);
   log("  [1] SINGLE NUMBER / CONTACT", 'cyan');
@@ -323,7 +328,6 @@ async function main() {
     try {
       await sock.sendMessage(target.jid, { text: msg });
       
-      // Professional Send Output
       console.log("\n" + C.bold + C.green + "═══════════════════════════════════════════" + C.reset);
       log(`[TIME: ${ts}] ✅ MESSAGE SENT SUCCESSFULLY`, 'green', true);
       log(`🎯 TARGET : ${target.label}`, 'cyan');
