@@ -25,6 +25,7 @@ const C = {
   cyan: '\x1b[36m',
   magenta: '\x1b[35m',
   white: '\x1b[37m',
+  blue: '\x1b[34m', // <--- Ye add kar diya hai
   bgGreen: '\x1b[42m',
 };
 
@@ -33,9 +34,11 @@ function log(msg, color, isBold = false) {
   console.log(`${boldCode}${C[color] || ''}${msg}${C.reset}`);
 }
 
-// Professional Banner
+// Professional Banner with hard clear
 function banner() {
-  console.clear();
+  // Termux ko force se clear karne ka tareeqa
+  process.stdout.write('\x1b[2J\x1b[0;0H'); 
+  
   console.log(C.cyan + "═".repeat(65) + C.reset);
   console.log(C.bold + C.red + "   _______  _______  _______  _______  _______          ");
   console.log(C.bold + C.yellow + "  (  ____ )(  ___  )(  ____ \\(  ____ \\(  ___  )|\\     /|");
