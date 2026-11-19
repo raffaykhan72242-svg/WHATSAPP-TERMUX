@@ -32,7 +32,6 @@ function log(msg, color, isBold = false) {
   console.log(`${boldCode}${C[color] || ''}${msg}${C.reset}`);
 }
 
-// Ekdum hard clear jo Termux ka scrollback bhi mita de
 function hardClear() {
   process.stdout.write('\x1b[2J\x1b[3J\x1b[H'); 
 }
@@ -49,8 +48,8 @@ function banner() {
   console.log(C.bold + C.red + "  | ) \\ \\__| )   ( || )      | )      | )   ( |   | |   ");
   console.log(C.bold + C.yellow + "  |/   \\__/|/     \\||/       |/       |/     \\|   \\_/   ");
   console.log(C.bold + C.cyan + "                                                          ");
-  console.log(C.bold + C.white + "             WhatsApp Online Termux Server");
-  console.log(C.bold + C.green + "                CREATED BY: RAFFAY");
+  console.log(C.bold + C.cyan + "             WHATSAPP ONLINE TERMUX SERVER");
+  console.log(C.bold + C.green + "             CREATED BY: RAFFAY");
   console.log(C.cyan + "═".repeat(65) + C.reset);
   console.log("");
 }
@@ -257,11 +256,8 @@ async function main() {
 
   sock = await connectAndPair(phone);
 
-  // ---------------------------------------------------------
-  // Yahan Screen Clear ho jayegi taake purana kachra (pairing code wagera) khatam ho
   hardClear(); 
   banner();
-  // ---------------------------------------------------------
 
   log("═══════════════════════════════════════════", 'magenta');
   log("  🎯 SELECT MESSAGE TARGET", 'magenta', true);
@@ -322,7 +318,10 @@ async function main() {
 
     const msg = messages[idx % messages.length];
     const target = targets[idx % targets.length];
-    const ts = new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata' });
+    
+    // YAHAN TIMEZONE CHANGE KIYA HAI (Asia/Karachi)
+    const ts = new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Karachi' });
+    
     const preview = msg.length > 70 ? msg.slice(0, 70) + '...' : msg;
 
     try {
